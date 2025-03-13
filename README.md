@@ -1,6 +1,6 @@
 # CourierCalc
 
-# # Features
+## Features
 This is a calculator for SkipTheDishes courier work, features are currently under development however currently you are able to:
 
 - Add days to a list of days (like a week, month, or longer)
@@ -10,7 +10,7 @@ This is a calculator for SkipTheDishes courier work, features are currently unde
 - Calculate average hourly wage for a given period of time
 - Track weekly distance (in kilometers) driven
 
-# # Upcoming Features
+## Upcoming Features
 In the future I would like to implement:
 
 - Saving and loading to a file (XML, txt, etc)
