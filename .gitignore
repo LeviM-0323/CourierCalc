@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+/.vs/CourierCalc
+/CourierCalc/x64/Debug
+/x64/Debug

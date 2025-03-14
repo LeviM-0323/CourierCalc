@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <ctime>
+#include <fstream>
 #include "day.hpp"
 #include "order.hpp"
 #include "vehicle.hpp"
@@ -142,7 +143,8 @@ void addVehicle(vector<Vehicle>& vl) {
 
 void viewCars(vector<Vehicle>& vl) {
 	for (int i = 0; i < vl.size(); i++) {
-		cout << vl.at(i);
+		cout << "Vehicle #" << i << endl;
+		cout << vl.at(i) << endl;
 	}
 }
 
@@ -185,8 +187,65 @@ void gasCost(vector<Vehicle>& vl) {
 	}
 }
 
+void saveData(const vector<Day>& daysWorked, vector<Vehicle>& vehicleList) {
+	ofstream outFile("data.txt");
+
+	outFile << daysWorked.size() << endl;
+	for (const Day& day : daysWorked) {
+		outFile << day.getStartTime() << " " << day.getEndTime() << " " << " " << day.getNumOrders() << endl;
+		for (const Order& order : day.getOrders()) {
+			outFile << order.getDistance() << " " << order.getPayment() << endl;
+		}
+	}
+
+	outFile << vehicleList.size() << endl;
+	for (const Vehicle& vehicle : vehicleList) {
+		outFile << vehicle.getTankSize() << " " << vehicle.getYear() << " " << vehicle.getFeulEco() << " " << vehicle.getMake() << " " << vehicle.getModel() << " " << vehicle.getCommonName() << endl;
+	}
+
+	outFile.close();
+}
+
+void loadData(vector<Day>& daysWorked, vector<Vehicle>& vehicleList) {
+	ifstream inFile("data.txt");
+
+	if (!inFile) {
+		cout << "No previous data found. Starting fresh." << endl;
+		return;
+	}
+
+	size_t daysSize;
+	inFile >> daysSize;
+	daysWorked.clear();
+	for (size_t i = 0; i < daysSize; ++i) {
+		int startTime, endTime, numOrders;
+		inFile >> startTime >> endTime >> numOrders;
+		Day day(startTime, endTime, numOrders);
+		for (int j = 0; j < numOrders; ++j) {
+			double distance, payment;
+			inFile >> distance >> payment;
+			Order order(distance, payment);
+			day.addOrder(order);
+		}
+		daysWorked.push_back(day);
+	}
+
+	// Load vehicleList
+	size_t vehicleSize;
+	inFile >> vehicleSize;
+	vehicleList.clear();
+	for (size_t i = 0; i < vehicleSize; ++i) {
+		int tankSize, year;
+		double feulEco;
+		string make, model, commonName;
+		inFile >> tankSize >> year >> feulEco >> make >> model >> commonName;
+		Vehicle vehicle(tankSize, year, feulEco, make, model, commonName);
+		vehicleList.push_back(vehicle);
+	}
+
+	inFile.close();
+}
 int main() {
-	system("cls");
 	cout << "Welcome to CourierCalc!" << endl;
 
 	//Get the current date
@@ -197,6 +256,9 @@ int main() {
 	cout << "Date: " << 1900 + ltm->tm_year << "/" << 1 + ltm->tm_mon << "/" << ltm->tm_mday << endl;
 
 	cout << "Created by Levi McLean" << endl;
+
+	//Load data
+	loadData(daysWorked, vehicleList);
 
 	while (true) {
 		cout << endl;
@@ -227,12 +289,14 @@ int main() {
 		case 4:
 			system("cls");
 			viewCars(vehicleList);
+			break;
 		case 5:
 			system("cls");
 			gasCost(vehicleList);
 			break;
 		case 0:
-			cout << "Saving (not really) and Exiting..." << endl;
+			cout << "Saving and Exiting..." << endl;
+			saveData(daysWorked, vehicleList);
 			return 0;
 		default:
 			cout << "Invalid Selection... Please try again." << endl;

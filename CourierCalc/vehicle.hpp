@@ -42,7 +42,7 @@ public:
 	}
 
 	//Tank Size
-	int getTankSize() {
+	int getTankSize() const {
 		return tankSize;
 	}
 	void setTankSize(int ts) {
@@ -50,7 +50,7 @@ public:
 	}
 
 	//Year
-	int getYear() {
+	int getYear() const {
 		return year;
 	}
 	void setYear(int y) {
@@ -58,7 +58,7 @@ public:
 	}
 
 	//Feul economy
-	double getFeulEco() {
+	double getFeulEco() const {
 		return feulEco;
 	}
 	void setFeulEco(double fe) {
@@ -66,24 +66,24 @@ public:
 	}
 
 	//Make
-	void getMake() {
-		cout << make;
+	string getMake() const {
+		return make;
 	}
 	void setMake(string m) {
 		make = m;
 	}
 
 	//Model
-	void getModel() {
-		cout << model;
+	string getModel() const {
+		return model;
 	}
 	void setModel(string m) {
 		model = m;
 	}
 
 	//Common Name
-	void getCommonName() {
-		cout << commonName;
+	string getCommonName() const {
+		return commonName;
 	}
 	void setCommonName(string cn) {
 		commonName = cn;
